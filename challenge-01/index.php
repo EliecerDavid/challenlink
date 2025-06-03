@@ -12,7 +12,11 @@ function findPoint($strArr)
         }
     }
 
-    return implode(', ', $intersectedNumbers);
+    if ($intersectedNumbers) {
+        return implode(', ', $intersectedNumbers);
+    } else {
+        return 'false';
+    }
 }
 
 echo findPoint(['1, 3, 4, 7, 13', '1, 2, 4, 13, 15']);
