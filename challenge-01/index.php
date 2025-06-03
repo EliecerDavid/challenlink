@@ -1,22 +1,12 @@
 <?php
 
-function findPoint($strArr)
+function findPoint($strArr, $separator = ', ')
 {
-    $firstArray = explode(', ', $strArr[0]);
-    $secondArray = explode(', ', $strArr[1]);
+    $firstArray = explode($separator, $strArr[0]);
+    $secondArray = explode($separator, $strArr[1]);
 
-    $intersectedNumbers = [];
-    foreach ($firstArray as $number) {
-        if (in_array($number, $secondArray)) {
-            $intersectedNumbers[] = $number;
-        }
-    }
-
-    if ($intersectedNumbers) {
-        return implode(', ', $intersectedNumbers);
-    } else {
-        return 'false';
-    }
+    $intersectedArray = array_intersect($firstArray, $secondArray);
+    return  $intersectedArray ? implode($separator, $intersectedArray) : 'false';
 }
 
 echo findPoint(['1, 3, 4, 7, 13', '1, 2, 4, 13, 15']);
