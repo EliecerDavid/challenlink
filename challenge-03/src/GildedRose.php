@@ -27,54 +27,52 @@ class GildedRose
     public function tick()
     {
         if ($this->name == 'normal') {
-            $this->normalItemTick();
+            $this->updateNormalItemQuality();
         }
 
         if ($this->name == 'Aged Brie') {
-            $this->brieItemTick();
+            $this->updateBrieItemQuality();
         }
 
         if ($this->name == 'Sulfuras, Hand of Ragnaros') {
-            $this->sulfurasItemTick();
+            $this->updateSulfurasItemQuality();
         }
 
         if ($this->name == 'Backstage passes to a TAFKAL80ETC concert') {
-            $this->backstagePassesTick();
+            $this->updateBackstagePassesQuality();
         }
 
         if ($this->name == 'Conjured Mana Cake') {
-            $this->conjuredItemTick();
+            $this->updateconjuredItemQuality();
         }
+
+        $this->decreaseSellIn();
     }
 
-    private function normalItemTick()
+    private function updateNormalItemQuality()
     {
         if ($this->sellIn > 0) {
             $this->decreaseQuality();
         } else {
             $this->decreaseQuality(2);
         }
-
-        $this->decreaseSellIn();
     }
 
-    private function brieItemTick()
+    private function updateBrieItemQuality()
     {
         if ($this->sellIn > 0) {
             $this->increaseQuality();
         } else {
             $this->increaseQuality(2);
         }
-
-        $this->decreaseSellIn();
     }
 
-    private function sulfurasItemTick()
+    private function updateSulfurasItemQuality()
     {
         // this case requires no processing
     }
 
-    private function backstagePassesTick()
+    private function updateBackstagePassesQuality()
     {
         if ($this->sellIn > 10) {
             $this->increaseQuality();
@@ -85,19 +83,14 @@ class GildedRose
         } else {
             $this->invalidateQuality();
         }
-
-        $this->decreaseSellIn();
     }
 
-    private function conjuredItemTick()
+    private function updateconjuredItemQuality()
     {
-        if ($this->sellIn > 0) {
-            $this->decreaseQuality(2);
-        } else {
-            $this->decreaseQuality(4);
+        $times = 2;
+        for ($i = 0; $i < $times; $i++) {
+            $this->updateNormalItemQuality();
         }
-
-        $this->decreaseSellIn();
     }
 
     private function increaseQuality(int $times = 1)
@@ -125,6 +118,10 @@ class GildedRose
 
     private function decreaseSellIn()
     {
+        if ($this->name == 'Sulfuras, Hand of Ragnaros') {
+            return;
+        }
+
         $this->sellIn--;
     }
 }
