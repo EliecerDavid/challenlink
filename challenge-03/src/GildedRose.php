@@ -120,7 +120,7 @@ class GildedRose
 
     private function invalidateQuality()
     {
-        $this->quality = 0;
+        $this->quality = self::MIN_QUALITY;
     }
 
     private function decreaseSellIn()
