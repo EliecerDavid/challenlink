@@ -41,6 +41,10 @@ class GildedRose
         if ($this->name == 'Backstage passes to a TAFKAL80ETC concert') {
             $this->backstagePassesTick();
         }
+
+        if ($this->name == 'Conjured Mana Cake') {
+            $this->conjuredItemTick();
+        }
     }
 
     private function normalItemTick()
@@ -80,6 +84,17 @@ class GildedRose
             $this->increaseQuality(3);
         } else {
             $this->invalidateQuality();
+        }
+
+        $this->decreaseSellIn();
+    }
+
+    private function conjuredItemTick()
+    {
+        if ($this->sellIn > 0) {
+            $this->decreaseQuality(2);
+        } else {
+            $this->decreaseQuality(4);
         }
 
         $this->decreaseSellIn();
