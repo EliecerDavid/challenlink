@@ -8,6 +8,12 @@ class GildedRose
     const MAX_QUALITY = 50;
     const MIN_QUALITY = 0;
 
+    const NORMAL_ITEM_TYPE = 'normal';
+    const BRIE_ITEM_TYPE = 'Aged Brie';
+    const SULFURAS_ITEM_TYPE = 'Sulfuras, Hand of Ragnaros';
+    const BACKSTAGE_PASSES_TYPE = 'Backstage passes to a TAFKAL80ETC concert';
+    const CONJURED_ITEM_TYPE = 'Conjured Mana Cake';
+
     public $name;
     public $quality;
     public $sellIn;
@@ -26,23 +32,23 @@ class GildedRose
 
     public function tick()
     {
-        if ($this->name == 'normal') {
+        if ($this->name == self::NORMAL_ITEM_TYPE) {
             $this->updateNormalItemQuality();
         }
 
-        if ($this->name == 'Aged Brie') {
+        if ($this->name == self::BRIE_ITEM_TYPE) {
             $this->updateBrieItemQuality();
         }
 
-        if ($this->name == 'Sulfuras, Hand of Ragnaros') {
+        if ($this->name == self::SULFURAS_ITEM_TYPE) {
             $this->updateSulfurasItemQuality();
         }
 
-        if ($this->name == 'Backstage passes to a TAFKAL80ETC concert') {
+        if ($this->name == self::BACKSTAGE_PASSES_TYPE) {
             $this->updateBackstagePassesQuality();
         }
 
-        if ($this->name == 'Conjured Mana Cake') {
+        if ($this->name == self::CONJURED_ITEM_TYPE) {
             $this->updateconjuredItemQuality();
         }
 
@@ -118,7 +124,7 @@ class GildedRose
 
     private function decreaseSellIn()
     {
-        if ($this->name == 'Sulfuras, Hand of Ragnaros') {
+        if ($this->name == self::SULFURAS_ITEM_TYPE) {
             return;
         }
 
