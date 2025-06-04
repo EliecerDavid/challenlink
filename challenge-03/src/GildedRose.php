@@ -4,6 +4,10 @@ namespace App;
 
 class GildedRose
 {
+    const QUALITY_CHANGE_RATE = 1;
+    const MAX_QUALITY = 50;
+    const MIN_QUALITY = 0;
+
     public $name;
     public $quality;
     public $sellIn;
@@ -23,53 +27,89 @@ class GildedRose
     public function tick()
     {
         if ($this->name == 'normal') {
-            $this->quality--;
-            $this->sellIn--;
-
-            if ($this->sellIn < 0) {
-                $this->quality--;
-            }
-
-            if ($this->quality < 0) {
-                $this->quality = 0;
-            }
+            $this->normalItemTick();
         }
 
         if ($this->name == 'Aged Brie') {
-            $this->quality++;
-            $this->sellIn--;
-
-            if ($this->sellIn < 0) {
-                $this->quality++;
-            }
-
-            if ($this->quality > 50) {
-                $this->quality = 50;
-            }
+            $this->brieItemTick();
         }
 
         if ($this->name == 'Sulfuras, Hand of Ragnaros') {
+            $this->sulfurasItemTick();
         }
 
         if ($this->name == 'Backstage passes to a TAFKAL80ETC concert') {
-            $this->quality++;
-            $this->sellIn--;
-
-            if ($this->sellIn < 10) {
-                $this->quality++;
-            }
-
-            if ($this->sellIn < 5) {
-                $this->quality++;
-            }
-
-            if ($this->sellIn < 0) {
-                $this->quality = 0;
-            }
-
-            if ($this->quality > 50) {
-                $this->quality = 50;
-            }
+            $this->backstagePassesTick();
         }
+    }
+
+    private function normalItemTick()
+    {
+        if ($this->sellIn > 0) {
+            $this->decreaseQuality();
+        } else {
+            $this->decreaseQuality(2);
+        }
+
+        $this->decreaseSellIn();
+    }
+
+    private function brieItemTick()
+    {
+        if ($this->sellIn > 0) {
+            $this->increaseQuality();
+        } else {
+            $this->increaseQuality(2);
+        }
+
+        $this->decreaseSellIn();
+    }
+
+    private function sulfurasItemTick()
+    {
+        // this case requires no processing
+    }
+
+    private function backstagePassesTick()
+    {
+        if ($this->sellIn > 10) {
+            $this->increaseQuality();
+        } elseif ($this->sellIn > 5) {
+            $this->increaseQuality(2);
+        } elseif ($this->sellIn > 0) {
+            $this->increaseQuality(3);
+        } else {
+            $this->invalidateQuality();
+        }
+
+        $this->decreaseSellIn();
+    }
+
+    private function increaseQuality(int $times = 1)
+    {
+        $this->quality = $this->quality + (self::QUALITY_CHANGE_RATE * $times);
+
+        if ($this->quality > self::MAX_QUALITY) {
+            $this->quality = self::MAX_QUALITY;
+        }
+    }
+
+    private function decreaseQuality(int $times = 1)
+    {
+        $this->quality = $this->quality - (self::QUALITY_CHANGE_RATE * $times);
+
+        if ($this->quality < self::MIN_QUALITY) {
+            $this->quality = self::MIN_QUALITY;
+        }
+    }
+
+    private function invalidateQuality()
+    {
+        $this->quality = 0;
+    }
+
+    private function decreaseSellIn()
+    {
+        $this->sellIn--;
     }
 }
